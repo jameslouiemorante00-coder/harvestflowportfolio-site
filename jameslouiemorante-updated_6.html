@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="AI-generated UGC video ads + the funnels they convert on, built for DTC pet and wellness brands."/>
+<title>HarvestFlow — Funnel Specialist & AI UGC Video Producer</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+
+<!-- EmailJS — free auto-reply (200 emails/month) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --gold-dim: rgba(201,168,76,0.1);
+  --gold-border: rgba(201,168,76,0.2);
+  --black: #000000;
+  --black-2: #0A0A0A;
+  --white: #F5F0E8;
+  --gray: rgba(255,255,255,0.35);
+  --gray-dim: rgba(255,255,255,0.12);
+  --hf: 'Helvetica Neue','Helvetica',Arial,sans-serif;
+  --pf: 'Poppins',sans-serif;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--pf);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── ORBS ─────────────────────────────────────────────────────────────── */
+.orbs {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.orb {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
+}
+.orb-1 { width: 700px; height: 700px; top: -20%; left: -15%; }
+.orb-2 { width: 600px; height: 600px; bottom: -20%; right: -10%; background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 65%); }
+.orb-3 { width: 400px; height: 400px; top: 40%; left: 40%; background: radial-gradient(circle, rgba(201,168,76,0.03) 0%, transparent 70%); }
+
+/* ── NAV ──────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 52px;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-logo {
+  font-family: var(--hf); font-weight: 700; font-size: 17px;
+  color: var(--gold); letter-spacing: -0.5px; text-decoration: none;
+}
+.nav-links { display: flex; gap: 32px; }
+.nav-links a {
+  font-family: var(--pf); font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  padding: 9px 22px; border-radius: 8px;
+  background: linear-gradient(135deg, #8B6914, var(--gold), var(--gold-light));
+  color: #000; font-family: var(--pf); font-size: 13px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(201,168,76,0.25);
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.35); }
+
+/* ── BANNER ───────────────────────────────────────────────────────────── */
+.banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: linear-gradient(135deg, #8B6914, var(--gold));
+  color: #000; text-align: center; padding: 8px 20px;
+  font-family: var(--pf); font-size: 12px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.banner-timer { font-weight: 700; letter-spacing: 1px; }
+body.has-banner nav { top: 37px; }
+body.has-banner .hero { padding-top: 160px; }
+
+/* ── SECTIONS ─────────────────────────────────────────────────────────── */
+section { position: relative; z-index: 1; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.section-pad { padding: 100px 0; }
+.section-label {
+  font-family: var(--pf); font-size: 11px; font-weight: 600;
+  color: rgba(201,168,76,0.55); letter-spacing: 2px; text-transform: uppercase;
+  display: block; margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--hf); font-weight: 700;
+  font-size: clamp(28px, 4vw, 42px); letter-spacing: -1.5px;
+  color: #fff; line-height: 1.1; margin-bottom: 16px;
+}
+.section-title span { color: var(--gold); }
+.divider {
+  width: 100%; height: 1px; margin: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh; padding: 140px 24px 80px;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+}
+.hero-inner {
+  max-width: 1080px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  border-radius: 100px; padding: 6px 16px; margin-bottom: 24px;
+}
+.hero-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+.hero-badge span { font-size: 11px; color: var(--gold); font-weight: 500; }
+.hero-title {
+  font-family: var(--hf); font-weight: 700;
+  font-size: clamp(40px, 5.5vw, 66px); letter-spacing: -2.5px;
+  line-height: 1; margin-bottom: 20px;
+  background: linear-gradient(150deg, #fff 0%, var(--gold-light) 45%, var(--gold) 70%, #7A5F20 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 16px; color: rgba(255,255,255,0.4); font-weight: 300;
+  line-height: 1.75; max-width: 460px; margin-bottom: 36px;
+}
+.hero-sub strong { color: rgba(255,255,255,0.75); font-weight: 500; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  padding: 14px 28px; border-radius: 8px; border: none;
+  background: linear-gradient(135deg, #8B6914, var(--gold), var(--gold-light));
+  color: #000; font-family: var(--pf); font-size: 14px; font-weight: 700;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.4); }
+.btn-ghost {
+  padding: 14px 28px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1); background: transparent;
+  color: rgba(255,255,255,0.4); font-family: var(--pf); font-size: 14px; font-weight: 400;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-ghost:hover { border-color: var(--gold-border); color: var(--gold); }
+
+.hero-trust {
+  margin-top: 44px; padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; gap: 36px; flex-wrap: wrap;
+}
+.trust-stat .num {
+  font-family: var(--hf); font-weight: 700; font-size: 28px;
+  color: var(--gold-light); letter-spacing: -1px; display: block;
+}
+.trust-stat .lbl {
+  font-size: 11px; color: rgba(255,255,255,0.25); font-weight: 400; margin-top: 2px;
+}
+
+.hero-image-wrap {
+  position: relative; border-radius: 20px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 60px rgba(201,168,76,0.06);
+}
+.hero-image-wrap::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.6) 100%);
+}
+.hero-image-wrap img {
+  width: 100%; height: 520px; object-fit: cover; display: block;
+}
+.hero-image-tag {
+  position: absolute; bottom: 20px; left: 20px; z-index: 2;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(12px);
+  border: 1px solid var(--gold-border); border-radius: 10px;
+  padding: 12px 16px;
+}
+.hero-image-tag .name { font-family: var(--hf); font-size: 14px; font-weight: 700; color: var(--gold-light); }
+.hero-image-tag .role { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+/* ── PROCESS ──────────────────────────────────────────────────────────── */
+.process-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  margin-top: 56px; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
+  overflow: hidden;
+}
+.process-item {
+  padding: 32px 24px; border-right: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02); transition: background 0.2s;
+  position: relative;
+}
+.process-item:last-child { border-right: none; }
+.process-item:hover { background: rgba(201,168,76,0.04); }
+.process-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity 0.2s;
+}
+.process-item:hover::before { opacity: 1; }
+.process-num {
+  font-family: var(--hf); font-size: 11px; font-weight: 700;
+  color: rgba(201,168,76,0.4); letter-spacing: 2px; margin-bottom: 14px;
+}
+.process-title {
+  font-family: var(--hf); font-size: 15px; font-weight: 700;
+  color: #fff; margin-bottom: 10px; letter-spacing: -0.3px;
+}
+.process-desc { font-size: 12px; color: rgba(255,255,255,0.3); line-height: 1.6; font-weight: 300; }
+
+/* ── ABOUT ────────────────────────────────────────────────────────────── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.about-imgs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.about-img {
+  border-radius: 14px; overflow: hidden; position: relative;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.about-img img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.about-img.tall { grid-row: span 2; }
+.about-img.tall img { height: 100%; min-height: 300px; }
+.about-quote {
+  margin: 28px 0; padding: 20px 24px;
+  border-left: 2px solid var(--gold);
+  background: var(--gold-dim); border-radius: 0 8px 8px 0;
+}
+.about-quote p {
+  font-size: 14px; color: rgba(255,255,255,0.5); font-style: italic;
+  line-height: 1.7; font-weight: 300;
+}
+.about-quote .author { margin-top: 10px; font-size: 12px; color: var(--gold); font-weight: 500; font-style: normal; }
+
+/* ── PORTFOLIO ────────────────────────────────────────────────────────── */
+.portfolio-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 48px;
+}
+.portfolio-card {
+  border-radius: 14px; overflow: hidden; position: relative;
+  border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.02);
+  transition: all 0.3s;
+}
+.portfolio-card:hover { border-color: var(--gold-border); transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.portfolio-video { width: 100%; aspect-ratio: 9/16; border: none; display: block; }
+.portfolio-label {
+  padding: 12px 16px; background: rgba(0,0,0,0.8);
+  font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 500;
+  display: flex; align-items: center; gap: 8px;
+}
+.portfolio-label span { color: var(--gold); }
+
+/* ── SERVICES ─────────────────────────────────────────────────────────── */
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-top: 48px;
+}
+.service-card {
+  padding: 32px 28px; border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.02); position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.service-card:hover { border-color: var(--gold-border); background: rgba(201,168,76,0.04); }
+.service-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.service-card .orb-inner {
+  position: absolute; top: -40%; right: -20%; width: 200px; height: 200px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.service-tag {
+  font-family: var(--pf); font-size: 10px; font-weight: 700;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 16px; display: block;
+}
+.service-title {
+  font-family: var(--hf); font-size: 19px; font-weight: 700;
+  color: #fff; letter-spacing: -0.5px; margin-bottom: 12px;
+}
+.service-desc { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-bottom: 20px; }
+.service-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.service-list li {
+  font-size: 12px; color: rgba(255,255,255,0.4); display: flex; gap: 8px; align-items: flex-start;
+}
+.service-list li::before { content: '✦'; color: var(--gold); font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+
+/* ── STACK ────────────────────────────────────────────────────────────── */
+.stack-wrap {
+  margin-top: 48px; padding: 32px 36px;
+  border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center;
+}
+.stack-chip {
+  padding: 8px 16px; border-radius: 100px;
+  border: 1px solid rgba(201,168,76,0.15); background: var(--gold-dim);
+  font-size: 12px; color: var(--gold); font-weight: 500;
+  font-family: var(--pf);
+}
+
+/* ── TESTIMONIALS ─────────────────────────────────────────────────────── */
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 48px;
+}
+.testimonial-card {
+  padding: 28px 24px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.02);
+  position: relative;
+}
+.testimonial-card::before {
+  content: '"'; position: absolute; top: 16px; right: 20px;
+  font-family: var(--hf); font-size: 56px; color: rgba(201,168,76,0.08); line-height: 1;
+}
+.testimonial-text {
+  font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.75;
+  font-style: italic; margin-bottom: 20px;
+}
+.testimonial-author { display: flex; align-items: center; gap: 10px; }
+.testimonial-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.testimonial-name { font-family: var(--hf); font-size: 13px; color: var(--gold-light); font-weight: 700; }
+.testimonial-role { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 1px; }
+
+/* ── FORM SECTION ─────────────────────────────────────────────────────── */
+.form-wrap {
+  max-width: 640px; margin: 0 auto;
+}
+.form-card {
+  padding: 48px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);
+  position: relative; overflow: hidden;
+  box-shadow: 0 0 80px rgba(201,168,76,0.05);
+}
+.form-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+}
+.form-card .orb-inner {
+  position: absolute; bottom: -30%; right: -20%; width: 300px; height: 300px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.form-group { margin-bottom: 16px; }
+.form-label {
+  font-size: 11px; color: rgba(201,168,76,0.55); font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase; display: block; margin-bottom: 7px;
+}
+.form-input {
+  width: 100%; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+  padding: 13px 16px; color: #F0EBE0; font-size: 14px; font-family: var(--pf);
+  outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--gold); }
+.form-input::placeholder { color: rgba(255,255,255,0.1); }
+.form-submit {
+  width: 100%; padding: 16px; border-radius: 10px; border: none;
+  background: linear-gradient(135deg, #8B6914, var(--gold), var(--gold-light));
+  color: #000; font-family: var(--pf); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+.form-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,168,76,0.4); }
+.form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Success / Error states */
+.form-success {
+  display: none; text-align: center; padding: 32px 20px;
+}
+.form-success .check {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin: 0 auto 16px;
+}
+.form-success h3 { font-family: var(--hf); font-size: 20px; color: #fff; margin-bottom: 8px; }
+.form-success p { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; }
+.form-error {
+  background: rgba(255,60,60,0.08); border: 1px solid rgba(255,60,60,0.2);
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;
+  font-size: 13px; color: #ff7777; display: none;
+}
+
+/* Automation status badge */
+.automation-badges {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px;
+}
+.auto-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px;
+  border: 1px solid rgba(34,197,94,0.25); background: rgba(34,197,94,0.07);
+  font-size: 11px; color: #4ade80; font-family: var(--pf); font-weight: 500;
+}
+.auto-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+
+/* ── FAQ ──────────────────────────────────────────────────────────────── */
+.faq-list { margin-top: 48px; max-width: 720px; }
+.faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+.faq-q {
+  padding: 20px 0; display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; font-family: var(--hf); font-size: 15px; font-weight: 600;
+  color: rgba(255,255,255,0.7); transition: color 0.2s; gap: 20px;
+}
+.faq-q:hover { color: #fff; }
+.faq-icon { color: var(--gold); font-size: 18px; flex-shrink: 0; transition: transform 0.3s; }
+.faq-a { padding: 0 0 20px; font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.75; display: none; }
+.faq-item.open .faq-q { color: #fff; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-item.open .faq-a { display: block; }
+
+/* ── FINAL CTA ────────────────────────────────────────────────────────── */
+.final-cta {
+  text-align: center; padding: 100px 24px;
+  background: linear-gradient(180deg, transparent, rgba(201,168,76,0.04), transparent);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.final-cta h2 {
+  font-family: var(--hf); font-weight: 700;
+  font-size: clamp(28px, 5vw, 52px); letter-spacing: -2px;
+  color: #fff; line-height: 1.1; margin-bottom: 16px;
+}
+.final-cta p { font-size: 15px; color: rgba(255,255,255,0.3); margin-bottom: 36px; }
+
+/* ── FOOTER ───────────────────────────────────────────────────────────── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 28px 52px; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+}
+.footer-logo { font-family: var(--hf); font-weight: 700; font-size: 15px; color: rgba(201,168,76,0.35); }
+.footer-copy { font-family: var(--pf); font-size: 11px; color: rgba(255,255,255,0.12); }
+
+/* ── REVEAL ANIMATION ─────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── KEYFRAMES ────────────────────────────────────────────────────────── */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .hero-inner, .about-grid { grid-template-columns: 1fr; }
+  .hero-image-wrap { display: none; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+  .services-grid, .testimonials-grid, .portfolio-grid { grid-template-columns: 1fr; }
+  .section-pad { padding: 70px 0; }
+  .form-card { padding: 28px 24px; }
+  footer { padding: 24px; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body class="has-banner">
+
+<!-- ORBS -->
+<div class="orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- BANNER -->
+<div class="banner" id="banner">
+  <strong>4 production slots open for July</strong> &nbsp;·&nbsp; Closes in: &nbsp;
+  <span class="banner-timer" id="timer">loading...</span>
+  <button onclick="document.getElementById('banner').style.display='none';document.body.classList.remove('has-banner')" style="background:none;border:none;color:#000;cursor:pointer;margin-left:12px;opacity:0.5;font-size:14px;">✕</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">HarvestFlow</a>
+  <div class="nav-links">
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#portfolio">Work</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#apply" class="nav-cta">Let's Start →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span>Funnel Specialist · AI UGC Video Producer</span>
+      </div>
+      <h1 class="hero-title">Creative that converts.<br/>Built end to end.</h1>
+      <p class="hero-sub">
+        Every day without this funnel is a day your competitors capture the customer that should've been yours.
+        <strong>I build the ad. I build the page. You start getting leads.</strong>
+      </p>
+      <div class="hero-btns">
+        <a href="#apply" class="btn-primary">Let's Start This Project →</a>
+        <a href="#process" class="btn-ghost">See How It Works</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-stat"><span class="num">5+</span><span class="lbl">DTC Brands</span></div>
+        <div class="trust-stat"><span class="num">AI</span><span class="lbl">Video Production</span></div>
+        <div class="trust-stat"><span class="num">GHL</span><span class="lbl">Automation</span></div>
+        <div class="trust-stat"><span class="num">48h</span><span class="lbl">Response Time</span></div>
+      </div>
+    </div>
+    <div class="hero-image-wrap reveal">
+      <img src="https://jameslouiemorante.netlify.app/images/hero-graded.jpg" alt="James Louie Morante, Founder of HarvestFlow" onerror="this.style.display='none'"/>
+      <div class="hero-image-tag">
+        <div class="name">James Louie Morante</div>
+        <div class="role">Founder, HarvestFlow Studios</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESS -->
+<section id="process" class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Process</span>
+      <h2 class="section-title">From prompt to <span>converted lead.</span><br/>One pipeline.</h2>
+    </div>
+    <div class="process-grid reveal">
+      <div class="process-item">
+        <div class="process-num">01</div>
+        <div class="process-title">Prompt</div>
+        <p class="process-desc">Brand brief, offer, and avatar direction mapped into a reusable prompt kit.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">02</div>
+        <div class="process-title">Generate</div>
+        <p class="process-desc">AI avatar UGC produced in Veo, Higgsfield Soul 2.0, and HeyGen.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">03</div>
+        <div class="process-title">Edit</div>
+        <p class="process-desc">Cut, paced, and captioned in CapCut for scroll-stopping retention.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">04</div>
+        <div class="process-title">Funnel</div>
+        <p class="process-desc">Landing page built around the creative. Same offer, zero drop-off.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-num">05</div>
+        <div class="process-title">Convert</div>
+        <p class="process-desc">Leads routed into GoHighLevel. Tagged and followed up automatically.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about" class="section-pad">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-imgs reveal">
+        <div class="about-img tall">
+          <img src="https://jameslouiemorante.netlify.app/images/mid-navypolo.jpg" alt="James speaking" onerror="this.style.background='rgba(255,255,255,0.03)'"/>
+        </div>
+        <div class="about-img">
+          <img src="https://jameslouiemorante.netlify.app/images/mid2-navy-podium.jpg" alt="James presenting" onerror="this.style.background='rgba(255,255,255,0.03)'"/>
+        </div>
+        <div class="about-img">
+          <img src="https://jameslouiemorante.netlify.app/images/mid1-mauve.jpg" alt="James" onerror="this.style.background='rgba(255,255,255,0.03)'"/>
+        </div>
+      </div>
+      <div class="reveal">
+        <span class="section-label">About</span>
+        <h2 class="section-title">I'm James,<br/>founder of <span>HarvestFlow.</span></h2>
+        <p style="font-size:14px;color:rgba(255,255,255,0.4);line-height:1.8;margin-bottom:20px;">I help DTC brands scale with AI-powered video and the funnels built to convert it.</p>
+        <div class="about-quote">
+          <p>Most brands aren't losing because of bad products. They're losing because their leads have nowhere to land.</p>
+          <div class="author">— James Louie Morante</div>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.8;"><strong style="color:rgba(255,255,255,0.65);font-weight:500;">Stop losing leads. Get a system.</strong> Growth shouldn't run on luck. It should run on a process built to repeat, every single time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Selected Work</span>
+      <h2 class="section-title">Recent <span>AI UGC</span> ad reels</h2>
+    </div>
+    <div class="portfolio-grid reveal">
+      <div class="portfolio-card">
+        <iframe class="portfolio-video" src="https://drive.google.com/file/d/1qcmkh2fOF9bNMupcVlGv37E9D1whP3fR/preview" allow="autoplay" allowfullscreen></iframe>
+        <div class="portfolio-label"><span>▶</span> Iron Paws</div>
+      </div>
+      <div class="portfolio-card">
+        <iframe class="portfolio-video" src="https://drive.google.com/file/d/1s5NVk5o0jRnF__BoRALLDK4Ro_1Ut2yW/preview" allow="autoplay" allowfullscreen></iframe>
+        <div class="portfolio-label"><span>▶</span> Iron Paws II</div>
+      </div>
+      <div class="portfolio-card">
+        <iframe class="portfolio-video" src="https://drive.google.com/file/d/1ktBpTPf0gUBr4VKk-fAeYVJJ32-1yXIH/preview" allow="autoplay" allowfullscreen></iframe>
+        <div class="portfolio-label"><span>▶</span> Pants Polish</div>
+      </div>
+      <div class="portfolio-card">
+        <iframe class="portfolio-video" src="https://drive.google.com/file/d/1OSYPa_m4nVYfphvMcOUYpPsWPfxyXKY9/preview" allow="autoplay" allowfullscreen></iframe>
+        <div class="portfolio-label"><span>▶</span> Taily Collagen</div>
+      </div>
+      <div class="portfolio-card">
+        <iframe class="portfolio-video" src="https://drive.google.com/file/d/1_3MlJX6O93TqeaMomi6J4LdwxlSyi1Ss/preview" allow="autoplay" allowfullscreen></iframe>
+        <div class="portfolio-label"><span>▶</span> Nok</div>
+      </div>
+      <div class="portfolio-card">
+        <iframe class="portfolio-video" src="https://drive.google.com/file/d/1fstwJoktp68jzza549Rd_s_95RTMCbX7/preview" allow="autoplay" allowfullscreen></iframe>
+        <div class="portfolio-label"><span>▶</span> Taily Collagen II</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Package</span>
+      <h2 class="section-title">Good creative.<br/><span>A funnel that converts it.</span> Both.</h2>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="orb-inner"></div>
+        <span class="service-tag">Service 01</span>
+        <h3 class="service-title">AI UGC Video Production</h3>
+        <p class="service-desc">Your offer, turned into ad creative that stops the scroll. No camera, creator, or studio day needed.</p>
+        <ul class="service-list">
+          <li>Avatar-led product try-on & testimonial videos</li>
+          <li>Multi-clip prompt kits, reusable per offer</li>
+          <li>Built in Veo, Higgsfield, HeyGen + CapCut</li>
+          <li>Delivered ready to run on Meta & TikTok</li>
+        </ul>
+      </div>
+      <div class="service-card">
+        <div class="orb-inner"></div>
+        <span class="service-tag">Service 02</span>
+        <h3 class="service-title">Funnel Build</h3>
+        <p class="service-desc">The page your ad deserves. Same message, same offer, built to close instead of leak leads.</p>
+        <ul class="service-list">
+          <li>Custom-coded page, deployed live in days</li>
+          <li>Lead form wired directly into GoHighLevel</li>
+          <li>Automated tagging, pipeline stage & follow-up</li>
+          <li>Built once, duplicated fast for new offers</li>
+        </ul>
+      </div>
+      <div class="service-card" style="border-color:rgba(201,168,76,0.25);">
+        <div class="orb-inner"></div>
+        <span class="service-tag" style="color:#22C55E;">Service 03 — NEW</span>
+        <h3 class="service-title">Turn Yourself Into AI</h3>
+        <p class="service-desc">Your face. Your voice. Infinite content without ever picking up a camera again.</p>
+        <ul class="service-list">
+          <li>Custom AI avatar trained on your likeness</li>
+          <li>Unlimited scripts, same consistent on-camera you</li>
+          <li>Voice-matched delivery for true-to-you UGC</li>
+          <li>Own the asset — reuse across every campaign</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- STACK -->
+    <div class="reveal" style="margin-top:48px;">
+      <span class="section-label">Tool Stack</span>
+      <div class="stack-wrap">
+        <span class="stack-chip">Google Veo / Flow</span>
+        <span class="stack-chip">Higgsfield Soul 2.0</span>
+        <span class="stack-chip">HeyGen</span>
+        <span class="stack-chip">CapCut</span>
+        <span class="stack-chip">GoHighLevel</span>
+        <span class="stack-chip">Adobe Premiere Pro</span>
+        <span class="stack-chip">ElevenLabs</span>
+        <span class="stack-chip">GitHub + Netlify</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Social Proof</span>
+      <h2 class="section-title">Brands I've <span>produced for</span></h2>
+    </div>
+    <div class="testimonials-grid reveal">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"The avatar ads James built didn't feel like ads. They felt native. CTR jumped within the first week."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">🧑</div>
+          <div>
+            <div class="testimonial-name">R.D.</div>
+            <div class="testimonial-role">Founder, Pet Supplement DTC</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"He built the video AND the page it landed on. No back-and-forth between two vendors."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">👩</div>
+          <div>
+            <div class="testimonial-name">M.S.</div>
+            <div class="testimonial-role">Marketing Lead, Wellness Brand</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Leads landed directly in our GHL pipeline tagged and ready. Saved us hours a week."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">🧑‍💼</div>
+          <div>
+            <div class="testimonial-name">A.T.</div>
+            <div class="testimonial-role">Operations Manager, Pet Care Brand</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- APPLY FORM -->
+<section id="apply" class="section-pad">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <span class="section-label">Start Now</span>
+      <h2 class="section-title">4 production slots<br/>open for <span>July.</span></h2>
+      <p style="font-size:14px;color:rgba(255,255,255,0.3);margin-top:12px;">Every week you wait is a week your funnel isn't running. Fill this out and I'll respond within 48 hours to lock your slot.</p>
+    </div>
+
+    <div class="form-wrap reveal">
+      <div class="form-card">
+        <div class="orb-inner"></div>
+
+        <!-- Automation status badges -->
+        <div class="automation-badges">
+          <div class="auto-badge"><div class="auto-badge-dot"></div> Email auto-reply active</div>
+          <div class="auto-badge"><div class="auto-badge-dot"></div> Google Sheets capture active</div>
+          <div class="auto-badge"><div class="auto-badge-dot"></div> Netlify Forms backup active</div>
+        </div>
+
+        <h3 style="font-family:var(--hf);font-size:22px;font-weight:700;color:#fff;margin-bottom:24px;letter-spacing:-0.5px;">Let's Start This Project</h3>
+
+        <!-- Error message -->
+        <div class="form-error" id="formError"></div>
+
+        <!-- The Form -->
+        <form id="leadForm" name="harvestflow-leads" netlify netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="harvestflow-leads"/>
+          <input type="hidden" name="bot-field" style="display:none"/>
+
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" id="inputName" class="form-input" placeholder="Your full name" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" id="inputEmail" class="form-input" placeholder="your@email.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">What do you need most?</label>
+            <select name="service" id="inputService" required class="form-input" style="background:#0d0d0d;color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:13px 16px;font-family:var(--pf);font-size:14px;outline:none;width:100%;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%23C9A84C%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>');background-repeat:no-repeat;background-position:right 16px center;">
+              <option value="" style="background:#0d0d0d;color:rgba(255,255,255,0.3);">Select a service...</option>
+              <option value="AI UGC Video Production" style="background:#0d0d0d;color:#fff;">AI UGC Video Production</option>
+              <option value="Funnel Build" style="background:#0d0d0d;color:#fff;">Funnel Build</option>
+              <option value="Turn Yourself Into AI" style="background:#0d0d0d;color:#fff;">Turn Yourself Into AI</option>
+              <option value="Full Package (Video + Funnel)" style="background:#0d0d0d;color:#fff;">Full Package (Video + Funnel)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="form-submit" id="submitBtn">
+            Let's Start This Project →
+          </button>
+        </form>
+
+        <!-- Success state -->
+        <div class="form-success" id="formSuccess">
+          <div class="check">✓</div>
+          <h3>You're in the queue!</h3>
+          <p>Check your inbox — a confirmation email is on its way with your booking link to schedule your discovery call.</p>
+          <p style="margin-top:12px;margin-bottom:24px;font-size:13px;color:rgba(255,255,255,0.25);">Didn't get the email? Check your spam or message <strong style="color:var(--gold);">@jamcreatives</strong> on LinkedIn.</p>
+          <a id="calendarBtn" href="https://calendar.app.google/U5L519CFbsdwyxKR6" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:10px;background:linear-gradient(135deg,#8B6914,#C9A84C,#E8C96A);color:#000;font-family:var(--pf);font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 20px rgba(201,168,76,0.3);transition:all 0.2s;">
+            Schedule Your Discovery Call →
+          </a>
+          <p style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.18);font-family:var(--pf);">Pick a time that works for you — a Google Meet link will be sent automatically.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section id="faq" class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Questions</span>
+      <h2 class="section-title">Before you <span>start</span></h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q">Do you only do AI avatar videos, or real creators too? <span class="faq-icon">+</span></div>
+        <div class="faq-a">My core service is AI-generated UGC built to look and feel like real creator content — without the cost or logistics of a creator roster.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I just hire you for the funnel, not the video? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes, both services work independently. But most clients see the biggest lift when the ad creative and the landing page are built together.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What's the typical turnaround? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Video production typically runs 5-7 days per batch. A funnel page deploys in 2-4 days once the brief is locked.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to already use GoHighLevel? <span class="faq-icon">+</span></div>
+        <div class="faq-a">It helps, but isn't required. I can help you get a simple GHL setup running as part of the funnel build.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What brands do you work best with? <span class="faq-icon">+</span></div>
+        <div class="faq-a">DTC pet supplements, wellness, skincare, and home brands. If you're selling a physical product and need scroll-stopping creative with a funnel to match, we're a fit.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <h2>Stop losing leads to a funnel<br/>that isn't built yet.</h2>
+  <p>July slots are filling fast. Lock yours before they're gone.</p>
+  <a href="#apply" class="btn-primary">Let's Start This Project →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">HarvestFlow</div>
+  <div class="footer-copy">© 2026 HarvestFlow Studios. All rights reserved.</div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     AUTOMATION SCRIPTS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+// ── 1. EMAILJS SETUP ──────────────────────────────────────────────────────────
+// SETUP INSTRUCTIONS:
+// 1. Go to emailjs.com → sign up free (200 emails/month)
+// 2. Add Email Service: Connect your Gmail
+// 3. Create Email Template with these variables:
+//    To: {{to_email}}  Subject: "✅ Got your message, {{from_name}}!"
+//    Body: Hi {{from_name}}, Thanks for reaching out about {{service}}!
+//          I'll be in touch within 48 hours. — James, HarvestFlow
+// 4. Replace the 3 values below with your real IDs
+
+const EMAILJS_PUBLIC_KEY  = "APZfGDNE9TzqrsOtt";
+const EMAILJS_SERVICE_ID  = "service_sxc4oo1";           // ✅ already set
+const EMAILJS_TEMPLATE_ID = "template_ygkh6cb";
+const GOOGLE_MEET_LINK    = "https://calendar.app.google/U5L519CFbsdwyxKR6";
+
+// ── 2. GOOGLE SHEETS SETUP ───────────────────────────────────────────────────
+// SETUP INSTRUCTIONS:
+// 1. Create a Google Sheet with columns: Timestamp, Name, Email, Phone, Brand, Service
+// 2. Go to Extensions → Apps Script → paste the code below → deploy as Web App
+// 3. Copy the Web App URL and replace below
+//
+// Apps Script code to paste:
+// function doPost(e) {
+//   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+//   var data = JSON.parse(e.postData.contents);
+//   sheet.appendRow([new Date(), data.name, data.email, data.phone, data.brand, data.service]);
+//   return ContentService.createTextOutput(JSON.stringify({result:"success"})).setMimeType(ContentService.MimeType.JSON);
+// }
+
+const GOOGLE_SHEET_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL"; // e.g. "https://script.google.com/macros/s/..."
+
+// ── 3. FORM SUBMISSION HANDLER ────────────────────────────────────────────────
+(function() {
+  // Init EmailJS
+  if (EMAILJS_PUBLIC_KEY !== "YOUR_EMAILJS_PUBLIC_KEY") {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }
+
+  const form = document.getElementById("leadForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const formSuccess = document.getElementById("formSuccess");
+  const formError = document.getElementById("formError");
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    // Get values
+    const name    = document.getElementById("inputName").value.trim();
+    const email   = document.getElementById("inputEmail").value.trim();
+    const service = document.getElementById("inputService").value;
+
+    if (!name) {
+      showError("Please fill in your full name.");
+      return;
+    }
+    if (!email) {
+      showError("Please fill in your email address.");
+      return;
+    }
+    if (!service) {
+      showError("Please select what you need most.");
+      return;
+    }
+
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    formError.style.display = "none";
+
+    const leadData = { name, email, service, timestamp: new Date().toISOString() };
+    let emailSent = false;
+    let sheetSaved = false;
+
+    // ── Send auto-reply email via EmailJS ──────────────────────────────────
+    if (EMAILJS_PUBLIC_KEY !== "YOUR_EMAILJS_PUBLIC_KEY") {
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email:      email,
+          from_name:     name,
+          service:       service || "General inquiry",
+          meet_link:     GOOGLE_MEET_LINK,
+          reply_to:      "james@harvestflow.com"
+        });
+        emailSent = true;
+        console.log("✅ EmailJS: auto-reply sent to", email);
+      } catch(err) {
+        console.warn("⚠️ EmailJS failed:", err);
+      }
+    }
+
+    // ── Save to Google Sheets ──────────────────────────────────────────────
+    if (GOOGLE_SHEET_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL") {
+      try {
+        await fetch(GOOGLE_SHEET_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(leadData)
+        });
+        sheetSaved = true;
+        console.log("✅ Google Sheets: lead saved");
+      } catch(err) {
+        console.warn("⚠️ Google Sheets failed:", err);
+      }
+    }
+
+    // ── Netlify Forms fallback (always runs) ───────────────────────────────
+    try {
+      const netlifyData = new FormData();
+      netlifyData.append("form-name", "harvestflow-leads");
+      netlifyData.append("name", name);
+      netlifyData.append("email", email);
+      netlifyData.append("service", service);
+      await fetch("/", { method: "POST", body: netlifyData });
+      console.log("✅ Netlify Forms: submission captured");
+    } catch(err) {
+      console.warn("⚠️ Netlify Forms failed:", err);
+    }
+
+    // ── Show success ───────────────────────────────────────────────────────
+    form.style.display = "none";
+    formSuccess.style.display = "block";
+    console.log("✅ Form complete:", leadData);
+  });
+
+  function showError(msg) {
+    formError.textContent = msg;
+    formError.style.display = "block";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Let's Start This Project →";
+  }
+})();
+
+// ── 4. COUNTDOWN TIMER ───────────────────────────────────────────────────────
+(function() {
+  // Deadline: end of July 31 2026 at midnight Manila time (PHT = UTC+8)
+  const deadline = new Date("2026-07-31T23:59:59+08:00");
+
+  function updateTimer() {
+    const now = new Date();
+    const diff = deadline - now;
+    const timerEl = document.getElementById("timer");
+    const bannerEl = document.getElementById("banner");
+
+    if (diff <= 0) {
+      timerEl.textContent = "Slots closed";
+      // Update banner and section text when slots close
+      document.querySelectorAll(".section-title").forEach(el => {
+        if (el.innerHTML.includes("production slots")) {
+          el.innerHTML = "Production slots<br/>are <span>now closed.</span>";
+        }
+      });
+      return;
+    }
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    timerEl.textContent =
+      `${String(d).padStart(2,'0')}d : ${String(h).padStart(2,'0')}h : ${String(m).padStart(2,'0')}m : ${String(s).padStart(2,'0')}s`;
+  }
+
+  // Update every second so seconds tick live
+  updateTimer();
+  setInterval(updateTimer, 1000);
+})();
+
+// ── 5. SCROLL REVEAL ─────────────────────────────────────────────────────────
+(function() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add("visible"); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+})();
+
+// ── 6. FAQ ACCORDION ─────────────────────────────────────────────────────────
+(function() {
+  document.querySelectorAll(".faq-q").forEach(q => {
+    q.addEventListener("click", () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
+      if (!isOpen) item.classList.add("open");
+    });
+  });
+})();
+
+// ── 7. SMOOTH NAV SCROLL ─────────────────────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute("href"));
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+  });
+});
+</script>
+</body>
+</html>
